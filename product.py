@@ -2,8 +2,6 @@ from flask_restful import Resource, reqparse
 import sqlite3
 
 class Product(Resource):
-    TABLE_NAME = 'products'
-
     parser = reqparse.RequestParser()
     parser.add_argument('product_name', type=str, required=True, help="This field cannot be left blank!" )
     parser.add_argument('product_description', type=str, required=True, help="This field cannot be left blank!" )
@@ -20,7 +18,7 @@ class Product(Resource):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = "SELECT * FROM {table} WHERE product_name=?".format(table=cls.TABLE_NAME)
+        query = "SELECT * FROM products WHERE product_name=?"
         result = cursor.execute(query, (name,))
         row = result.fetchone()
         connection.close()
@@ -50,7 +48,7 @@ class Product(Resource):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = "INSERT INTO {table} VALUES(NULL, ?, ?, ?)".format(table=cls.TABLE_NAME)
+        query = "INSERT INTO products VALUES(NULL, ?, ?, ?)"
         cursor.execute(query, (product['product_name'], product['product_description'], product['product_price']))
 
         connection.commit()
@@ -60,7 +58,7 @@ class Product(Resource):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = "DELETE FROM {table} WHERE product_name=?".format(table=self.TABLE_NAME)
+        query = "DELETE FROM products WHERE product_name=?"
         cursor.execute(query, (name,))
 
         connection.commit()
@@ -93,7 +91,7 @@ class Product(Resource):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = "UPDATE {table} SET product_description=?, product_price=? WHERE product_name=?".format(table=cls.TABLE_NAME)
+        query = "UPDATE products SET product_description=?, product_price=? WHERE product_name=?"
         cursor.execute(query, (product['product_description'], product['product_price'], product['product_name']))
 
         connection.commit()
@@ -101,13 +99,11 @@ class Product(Resource):
 
 
 class ProductList(Resource):
-    TABLE_NAME = 'products'
-
     def get(self):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = "SELECT * FROM {table}".format(table=self.TABLE_NAME)
+        query = "SELECT * FROM products"
         result = cursor.execute(query)
         products = []
         for row in result:
