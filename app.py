@@ -9,7 +9,7 @@ class HelloWorld(Resource):
     def get(self):
         return {'hello': 'world'}
 
-api.add_resource(HelloWorld, '/')
+api.add_resource(HelloWorld, '/hello')
 api.add_resource(Product, '/product', '/product/<string:name>', endpoint='product')
 api.add_resource(ProductList, '/products')
 

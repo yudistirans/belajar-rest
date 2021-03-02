@@ -24,7 +24,7 @@ class Product(Resource):
         connection.close()
 
         if row:
-            return {'product': {'product_name': row[1], 'product_description': row[2], 'product_price': row[3]}}
+            return {'product': {'product_name': row[1], 'product_description': row[2], 'product_price': row[3], 'product_image': row[4]}}
 
     def post(self):
         data = Product.parser.parse_args()
@@ -107,7 +107,7 @@ class ProductList(Resource):
         result = cursor.execute(query)
         products = []
         for row in result:
-            products.append({'product_name': row[1], 'product_description': row[2], 'product_price': row[3]})
+            products.append({'product_name': row[1], 'product_description': row[2], 'product_price': row[3], 'product_image': row[4]})
         connection.close()
 
         return {'products': products}
