@@ -48,7 +48,7 @@ class Product(Resource):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = "INSERT INTO products VALUES(NULL, ?, ?, ?)"
+        query = "INSERT INTO products VALUES(NULL, ?, ?, ?, NULL)"
         cursor.execute(query, (product['product_name'], product['product_description'], product['product_price']))
 
         connection.commit()
